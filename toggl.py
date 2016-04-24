@@ -782,10 +782,12 @@ class TimeEntryList(object):
     A singleton list of recent TimeEntry objects.
     """
 
-    def __init__(self):
+    def __init__(self, start_date=None, end_date=None):
         """
-        Fetches time entry data from toggl.
+        Fetches time entry data from toggl. start_date and end_date should be datetime objects
         """
+        self.start_date = start_date or DateAndTime.start_of_yesterday()
+        self.end_date = end_date or DateAndTime().last_minute_today()
         self.reload()
         
     def __iter__(self):
@@ -841,8 +843,8 @@ class TimeEntryList(object):
         """
         # Fetch time entries from 00:00:00 yesterday to 23:59:59 today.
         url = "%s/time_entries?start_date=%s&end_date=%s" % \
-            (TOGGL_URL, urllib.parse.quote(DateAndTime().start_of_yesterday().isoformat('T')), \
-            urllib.parse.quote(DateAndTime().last_minute_today().isoformat('T')))
+            (TOGGL_URL, urllib.parse.quote(self.start_date.isoformat('T')), \
+            urllib.parse.quote(self.end_date.isoformat('T')))
         Logger.debug(url)
         entries = json.loads( toggl(url, 'get') )
 
