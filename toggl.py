@@ -782,8 +782,6 @@ class TimeEntryList(object):
     A singleton list of recent TimeEntry objects.
     """
 
-    __metaclass__ = Singleton
-
     def __init__(self):
         """
         Fetches time entry data from toggl.
