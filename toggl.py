@@ -373,6 +373,16 @@ class ClientList(object):
             s = s + "%s\n" % client['name']
         return s.rstrip().encode('utf-8') # strip trailing \n
 
+    def find_by_name(self, name):
+        """
+        Returns the client object with the given name, or None.
+        """
+        for client in self:
+            if client['name'] == name:
+                return client
+        return None
+
+
 #----------------------------------------------------------------------------
 # WorkspaceList
 #----------------------------------------------------------------------------
@@ -788,6 +798,10 @@ class TimeEntryList(object):
         """
         self.start_date = start_date or DateAndTime.start_of_yesterday()
         self.end_date = end_date or DateAndTime().last_minute_today()
+        if self.start_date.tzinfo is None:
+            self.start_date = DateAndTime().tz.localize(self.start_date)
+        if self.end_date.tzinfo is None:
+            self.end_date = DateAndTime().tz.localize(self.end_date)
         self.reload()
         
     def __iter__(self):
