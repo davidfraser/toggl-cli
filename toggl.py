@@ -582,7 +582,7 @@ class TimeEntry(object):
         Adds this time entry as a completed entry. 
         """
         self.validate()
-        toggl("%s/time_entries" % TOGGL_URL, "post", self.json())
+        return toggl("%s/time_entries" % TOGGL_URL, "post", self.json())
 
     def continue_entry(self, continued_at=None):
         """
