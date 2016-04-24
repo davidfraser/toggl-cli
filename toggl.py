@@ -857,7 +857,7 @@ class TimeEntryList(object):
             self.time_entries.append(te)
 
         # Sort the list by start time.
-        sorted(self.time_entries, key=lambda entry: entry.data['start'])
+        self.time_entries.sort(key=lambda entry: entry.data['start'])
         return self
 
     def __str__(self):
